@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   <link href="css/normalize.css" type="text/css" rel="stylesheet">
+  <link href="css/ionicons.css" type="text/css" rel="stylesheet">
   <link href="css/styles.css" type="text/css" rel="stylesheet">
 
   <title>Palette Picker By Nick Svetnicka</title>
@@ -22,39 +23,48 @@
 
       <div id='div-color1' class='div-color-drop'>
         <label id='lbl-color1-hex'></label>
+        <span id='span-color1-lock'><i class="icon ion-unlocked"></i></span>
       </div>
 
       <div id='div-color2' class='div-color-drop'>
         <label id='lbl-color2-hex'></label>
+        <span id='span-color2-lock'>lock</span>
       </div>
 
       <div id='div-color3' class='div-color-drop'>
         <label id='lbl-color3-hex'></label>
+        <span id='span-color3-lock'>lock</span>
       </div>
 
       <div id='div-color4' class='div-color-drop'>
         <label id='lbl-color4-hex'></label>
+        <span id='span-color4-lock'>lock</span>
       </div>
 
       <div id='div-color5' class='div-color-drop'>
         <label id='lbl-color5-hex'></label>
+        <span id='span-color5-lock'>lock</span>
       </div>
 
     </section>
 
     <button id='btn-gen-new-palette'>Generate New Palette</button>
 
-    <select>
-      <option value="project1">project1</option>
-      <option value="project2">project2</option>
-      <option value="project3">project3</option>
-    </select>
+    <form id="formSavePalette" role="form">
+      <select>
+        <option value="project1">project1</option>
+        <option value="project2">project2</option>
+        <option value="project3">project3</option>
+      </select>
+      
+      <input type='text' placeholder='Palette Name' />
+      <button id='btn-save-palette' type='submit'>Save Palette</button>
+    </form>
 
-    <input type='text' placeholder='Palette Name' />
-    <button id='btn-save-palette'>Save Palette</button>
-
-    <input type='text' placeholder='Project Name' />
-    <button id='btn-create-project'>Create Project</button>
+    <form id='formCreateProject' role='form'>
+      <input type='text' placeholder='Project Name' />
+      <button id='btn-create-project' type='submit'>Create Project</button>
+    </form>
 
   </main>
 

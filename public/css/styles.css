@@ -14,3 +14,7 @@
   border: 1px solid darkslategrey;
   border-radius: 5px;
 }
+
+.div-color-drop {
+  cursor: pointer;
+}

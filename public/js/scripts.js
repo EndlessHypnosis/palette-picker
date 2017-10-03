@@ -1,17 +1,14 @@
 
-// let divColor1 = $('#color1');
 
-// console.log('div1:', divColor1);
-
-
-let randomColor;
-
-// divColor1.css('background-color', randomColor)
+// do this once when the page loads
+$(document).ready(function () {
+  genNewPalette();
+})
 
 
 
 const genNewPalette = () => {
-  
+  let randomColor;
   for (let i = 1; i < 6; i++) {
     randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
     $(`#div-color${i}`).css('background-color', randomColor);
@@ -19,11 +16,35 @@ const genNewPalette = () => {
   }
 }
 
+const onFormSavePalette = () => {
+  console.log('save palette form hit');
+}
 
-$('#btn-gen-new-palette').on('click', genNewPalette)
+const onFormCreateProject = () => {
+  console.log('create project form hit');
+}
 
-genNewPalette();
+const LockUnlock = () => {
+  console.log(this);
+}
 
-console.log('LOG THIS:', $('#lbl-color1-hex'))
-// debugger;
-$('#lbl-color1-hex').text('SDFSDF');
+
+$('#btn-gen-new-palette').on('click', genNewPalette);
+
+
+$('#formSavePalette').on('submit', e => {
+  e.preventDefault();
+  onFormSavePalette(e);
+});
+
+$('#formCreateProject').on('submit', e => {
+  e.preventDefault();
+  onFormCreateProject(e);
+});
+
+$('.div-color-drop').on('click', (e) => {
+  console.log('this is what', e.currentTarget)
+});
+
+
+
