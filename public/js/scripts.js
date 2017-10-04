@@ -9,10 +9,18 @@ $(document).ready(function () {
 
 const genNewPalette = () => {
   let randomColor;
+  let lockIcon;
   for (let i = 1; i < 6; i++) {
-    randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-    $(`#div-color${i}`).css('background-color', randomColor);
-    $(`#lbl-color${i}-hex`).text(randomColor);
+
+    // don't reroll for locked
+    lockIcon = $(`#icon-color${i}-lock`);
+
+    if (lockIcon.hasClass('ion-unlocked')) {
+      randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+      $(`#div-color${i}`).css('background-color', randomColor);
+      $(`#lbl-color${i}-hex`).text(randomColor);
+    }
+
   }
 }
 
@@ -26,8 +34,18 @@ const onFormCreateProject = () => {
 
 const LockUnlock = (e) => {
   const targetDiv = $(e.currentTarget);
-  console.log('data-icon for this div: ', targetDiv.data('icon'));
-  
+  const targetIcon = $(`#${targetDiv.data('icon')}`)
+  console.log('data-icon for this div: ', targetIcon);
+
+  if (targetIcon.hasClass('ion-unlocked')) {
+    targetIcon
+      .removeClass('ion-unlocked lock-green')
+      .addClass('ion-locked lock-red');
+  } else {
+    targetIcon
+    .removeClass('ion-locked lock-red')
+    .addClass('ion-unlocked lock-green');
+  }
 }
 
 $('#btn-gen-new-palette').on('click', genNewPalette);

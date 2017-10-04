@@ -22,3 +22,11 @@
 .lbl-color-hex {
   cursor: pointer;
 }
+
+.lock-green {
+  color: green;
+}
+
+.lock-red {
+  color: red;
+}
