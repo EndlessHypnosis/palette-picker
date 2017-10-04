@@ -3,23 +3,40 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('port', process.env.PORT || 3000);
-app.locals.title = 'Secret Box';
+app.locals.title = 'Palette Picker';
 
-app.locals.messages = {
-  foo: 'bar',
-  baz: 'bam',
-  qui: 'bur'
+app.locals.palettes = {
+  palette1: ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b'],
+  palette2: ['#5ddee3', '#c2ebe3', '#6a4de9', '#57f350', '#5f3a6e'],
+  palette3: ['#a941ec', '#de6213', '#47dc8a', '#4b8de9', '#4ad232']
 };
 
-app.get('/api/messages', (request, response) => {
-  response.status(200).json(app.locals.messages)
+app.locals.projects = {
+  project1: ['palette1', 'palette2'],
+  project2: ['palette3']
+};
+
+// Get all projects
+app.get('/api/projects', (request, response) => {
+  response.status(200).json(app.locals.projects)
 });
+
+// Create new project
+app.post('/api/projects', (request, response) => {
+
+  // const id = Date.now();
+  const { projectName } = request.body;
+
+  app.locals.projects[projectName] = [];
+  response.sendStatus(201);
+});
+
+
+
 
 app.get('/api/messages/:id', (request, response) => {
 
