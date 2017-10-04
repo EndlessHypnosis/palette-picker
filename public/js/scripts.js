@@ -24,10 +24,11 @@ const onFormCreateProject = () => {
   console.log('create project form hit');
 }
 
-const LockUnlock = () => {
-  console.log(this);
+const LockUnlock = (e) => {
+  const targetDiv = $(e.currentTarget);
+  console.log('data-icon for this div: ', targetDiv.data('icon'));
+  
 }
-
 
 $('#btn-gen-new-palette').on('click', genNewPalette);
 
@@ -43,7 +44,7 @@ $('#formCreateProject').on('submit', e => {
 });
 
 $('.div-color-drop').on('click', (e) => {
-  console.log('this is what', e.currentTarget)
+  LockUnlock(e);
 });
 
 
