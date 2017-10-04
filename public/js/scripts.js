@@ -91,7 +91,7 @@ const createProject = (e) => {
 
 const LockUnlock = (e) => {
   const targetDiv = $(e.currentTarget);
-  const targetIcon = $(`#${targetDiv.data('icon')}`)
+  const targetIcon = $(`#${targetDiv.data('icon')}`);
   console.log('data-icon for this div: ', targetIcon);
 
   if (targetIcon.hasClass('ion-unlocked')) {

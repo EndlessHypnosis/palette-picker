@@ -1,10 +1,30 @@
 // TODO: have a comment on every line
+
+// setup express
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 
+// json parser so that express can parse incoming body
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+// so that static assets can be served over localhost?
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+// setup knex
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
+
+
+
+
+
+
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Palette Picker';
@@ -46,6 +66,25 @@ app.get('/api/palettes', (request, response) => {
 
   // do the stuff that adds the palette with project link
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Example endpoints from code-along
