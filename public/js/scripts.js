@@ -3,9 +3,33 @@
 // do this once when the page loads
 $(document).ready(function () {
   genNewPalette();
+  getProjects();
 })
 
 
+const getProjects = () => {
+
+  const dropDownList = $('#select-project-list')
+
+  fetch('http://localhost:3000/api/projects')
+  .then(result => result.json())
+  .then(projects => {
+    // console.log('THIS IS Projects:', projects)
+    let projectNames = Object.keys(projects);
+
+    dropDownList.children().remove();
+
+    projectNames.forEach(project => {
+      dropDownList.append($('<option>', {
+        value: project,
+        text: project
+      }));
+    })
+
+
+
+  })
+}
 
 const genNewPalette = () => {
   let randomColor;
@@ -24,12 +48,27 @@ const genNewPalette = () => {
   }
 }
 
-const onFormSavePalette = () => {
+const savePalette = (e) => {
   console.log('save palette form hit');
 }
 
-const onFormCreateProject = () => {
-  console.log('create project form hit');
+const createProject = (e) => {
+  console.log('create project form hit', e);
+  const newProjectName = $('#input-create-project').val();
+  
+  fetch('http://localhost:3000/api/projects', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ projectName: newProjectName})
+  })
+  .then(data => {
+    console.log('Create Project: ', data)
+    // refresh dropdown
+    getProjects();
+  })
 }
 
 const LockUnlock = (e) => {
@@ -53,12 +92,12 @@ $('#btn-gen-new-palette').on('click', genNewPalette);
 
 $('#formSavePalette').on('submit', e => {
   e.preventDefault();
-  onFormSavePalette(e);
+  savePalette(e);
 });
 
 $('#formCreateProject').on('submit', e => {
   e.preventDefault();
-  onFormCreateProject(e);
+  createProject(e);
 });
 
 $('.div-color-drop').on('click', (e) => {
