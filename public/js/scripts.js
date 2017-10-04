@@ -49,7 +49,25 @@ const genNewPalette = () => {
 }
 
 const savePalette = (e) => {
-  console.log('save palette form hit');
+  console.log('save palette form hit', e);
+  const newPaletteName = $('#input-save-palette').val();
+
+  fetch('http://localhost:3000/api/palettes', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+      { paletteName: newPaletteName, 
+        projectLink: $('#select-project-list').find(":selected").text(),
+        paletteColors: ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b']
+      }
+    )
+  })
+  .then(data => {
+    console.log('Added Palette: ', data)
+  })
 }
 
 const createProject = (e) => {

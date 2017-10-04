@@ -35,6 +35,18 @@ app.post('/api/projects', (request, response) => {
   response.sendStatus(201);
 });
 
+// Get all palettes
+app.get('/api/palettes', (request, response) => {
+  response.status(200).json(app.locals.palettes)
+})
+
+// Add palette to project
+app.get('/api/palettes', (request, response) => {
+  const { paletteName, projectLink, paletteColors } = request.body;
+
+  // do the stuff that adds the palette with project link
+})
+
 
 
 
