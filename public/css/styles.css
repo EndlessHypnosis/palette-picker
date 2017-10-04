@@ -1,0 +1,32 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#section-color-drops {
+  display: flex;
+  flex-direction: row;
+}
+
+.div-color-drop {
+  padding: 10px;
+  border: 1px solid darkslategrey;
+  border-radius: 5px;
+}
+
+.div-color-drop {
+  cursor: pointer;
+}
+
+.lbl-color-hex {
+  cursor: pointer;
+}
+
+.lock-green {
+  color: green;
+}
+
+.lock-red {
+  color: red;
+}
