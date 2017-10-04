@@ -48,6 +48,7 @@ app.get('/api/palettes', (request, response) => {
 })
 
 
+// Example endpoints from code-along
 
 
 app.get('/api/messages/:id', (request, response) => {
@@ -123,6 +124,11 @@ app.delete('/api/messages/:id', (request, response) => {
   response.sendStatus(200); // maybe 204
 
 })
+
+
+
+
+// Need This!
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
