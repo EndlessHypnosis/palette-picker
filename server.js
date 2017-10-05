@@ -1,4 +1,6 @@
 // TODO: have a comment on every line
+// TODO: modify the palette get endpoint to join to
+//       projects table to get the name of the project
 
 // setup express
 // bring in the express library
@@ -70,7 +72,7 @@ app.get('/api/v1/palettes', (request, response) => {
 app.post('/api/v1/projects', (request, response) => {
 
   const { projectName } = request.body;
-  console.log('add project in api:', projectName);
+  // console.log('add project in api:', projectName);
   
 
   if (!projectName || projectName.length < 1) {
@@ -82,46 +84,55 @@ app.post('/api/v1/projects', (request, response) => {
   database('projects').insert({
     name: projectName
   }, 'id')
-    .then(project => {
-      response.status(201).json({ id: project[0] }); // why are we sending back the id of the newly created project? Why not the entire obj?
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  .then(project => {
+    response.status(201).json({ id: project[0] }); // why are we sending back the id of the newly created project? Why not the entire obj?
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
 
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Get all palettes
-// app.get('/api/palettes', (request, response) => {
-//   response.status(200).json(app.locals.palettes)
-// })
-
 // Add palette to project
-app.get('/api/palettes', (request, response) => {
-  const { paletteName, projectLink, paletteColors } = request.body;
+app.post('/api/v1/palettes', (request, response) => {
+  const { paletteName, projectLink, swatchesList } = request.body;
 
-  // do the stuff that adds the palette with project link
+  // see if we can come up with better logic for this conditional
+  // dont really like the idea of adding them to an array and then
+  // iterating over...as we can't check the length of swatchesList
+  if (!paletteName || !projectLink || swatchesList.length !== 5) {
+    // I guess with 1 blanket conditional we dont know details to give a good error message
+    return response
+      .status(422)
+      .send({ error: 'Palette Not Added: Invalid Input' })
+  }
+
+  database('palettes').insert({
+    name: paletteName,
+    swatches: JSON.stringify(swatchesList),
+    project_id: projectLink
+  }, 'id')
+  .then(palette => {
+    response.status(201).json({ id: palette[0] }); // again, why are we sending back the palette id? can't we send back entire palette obj?
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
+
 })
 
 
+
+// paletteName: newPaletteName,
+//   projectLink: $('#select-project-list').find(":selected").val(),
+//     swatchesList: buildSwatchesArray()  // ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b']
+
+
+// {
+//   name: 'second A palette',
+//     swatches: ['#98f30b', '#e3501c', '#4538bb', '#3cce59', '#fbdd13']
+// }
 
 
 
@@ -218,6 +229,12 @@ app.delete('/api/messages/:id', (request, response) => {
   response.sendStatus(200); // maybe 204
 
 })
+
+
+
+
+
+
 
 
 
