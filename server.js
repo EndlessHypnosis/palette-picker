@@ -1,7 +1,9 @@
 // TODO: have a comment on every line
 
 // setup express
+// bring in the express library
 const express = require('express');
+// DESCRIBE:
 const app = express();
 
 // json parser so that express can parse incoming body
@@ -16,34 +18,57 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // setup knex
+// we need to know what environment we're in...defaulting to dev
 const environment = process.env.NODE_ENV || 'development';
+// get the knex configuration (for the specific environment)
 const configuration = require('./knexfile')[environment];
+// now we're ready to connect knex to the database
 const database = require('knex')(configuration);
 
 
-
-
-
-
-
+// set the port based on environment, or default to 3000
 app.set('port', process.env.PORT || 3000);
+// setting locals title (but never used); // TODO remove?
 app.locals.title = 'Palette Picker';
 
-app.locals.palettes = {
-  palette1: ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b'],
-  palette2: ['#5ddee3', '#c2ebe3', '#6a4de9', '#57f350', '#5f3a6e'],
-  palette3: ['#a941ec', '#de6213', '#47dc8a', '#4b8de9', '#4ad232']
-};
+// app.locals.palettes = {
+//   palette1: ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b'],
+//   palette2: ['#5ddee3', '#c2ebe3', '#6a4de9', '#57f350', '#5f3a6e'],
+//   palette3: ['#a941ec', '#de6213', '#47dc8a', '#4b8de9', '#4ad232']
+// };
 
-app.locals.projects = {
-  project1: ['palette1', 'palette2'],
-  project2: ['palette3']
-};
+// app.locals.projects = {
+//   project1: ['palette1', 'palette2'],
+//   project2: ['palette3']
+// };
 
 // Get all projects
-app.get('/api/projects', (request, response) => {
-  response.status(200).json(app.locals.projects)
+app.get('/api/v1/projects', (request, response) => {
+
+  database('projects').select()
+  .then(projects => {
+    response.status(200).json(projects);
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
+
 });
+
+// Get all palettes
+app.get('/api/v1/palettes', (request, response) => {
+
+  database('palettes').select()
+  .then(palettes => {
+    response.status(200).json(palettes);
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
+
+});
+
+
 
 // Create new project
 app.post('/api/projects', (request, response) => {
@@ -56,9 +81,9 @@ app.post('/api/projects', (request, response) => {
 });
 
 // Get all palettes
-app.get('/api/palettes', (request, response) => {
-  response.status(200).json(app.locals.palettes)
-})
+// app.get('/api/palettes', (request, response) => {
+//   response.status(200).json(app.locals.palettes)
+// })
 
 // Add palette to project
 app.get('/api/palettes', (request, response) => {

@@ -3,7 +3,7 @@
 // do this once when the page loads
 $(document).ready(function () {
   genNewPalette();
-  getProjects();
+  //getProjects();
 })
 
 
