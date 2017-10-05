@@ -2,6 +2,9 @@
 // TODO: modify the palette get endpoint to join to
 //       projects table to get the name of the project
 
+
+// APP.USE = applying middleware
+
 // setup express
 // bring in the express library
 const express = require('express');
@@ -59,13 +62,16 @@ app.get('/api/v1/projects', (request, response) => {
 // Get all palettes
 app.get('/api/v1/palettes', (request, response) => {
 
-  database('palettes').select()
+  database('projects')
+  .join('palettes', 'projects.id', '=', 'palettes.project_id')
+  .select('projects.name as project_name', 'palettes.*')
   .then(palettes => {
     response.status(200).json(palettes);
   })
   .catch(error => {
     response.status(500).json({ error });
   });
+
 });
 
 // Create new project
@@ -74,22 +80,46 @@ app.post('/api/v1/projects', (request, response) => {
   const { projectName } = request.body;
   // console.log('add project in api:', projectName);
   
-
+  // make sure a valid project name was sent
   if (!projectName || projectName.length < 1) {
     return response
       .status(422)
-      .send({ error: 'Project NOT Added: Please submit a name for the project' })
+      .json({ 
+        status: 422,
+        error: 'Project NOT Added: Please submit a name for the project.' 
+      })
   }
 
-  database('projects').insert({
-    name: projectName
-  }, 'id')
-  .then(project => {
-    response.status(201).json({ id: project[0] }); // why are we sending back the id of the newly created project? Why not the entire obj?
+  // check if project name is unique
+  database('projects').select()
+  .then(projects => {
+    let projectsFiltered = projects.filter(project => {
+      return project.name === projectName;
+    })
+    // if something was found, that means we have a duplicate
+    if (projectsFiltered.length > 0) {
+      response
+      .status(409)
+      .json({
+        status: 409,
+        error: 'Project name already used: Please choose a new name.' 
+      })
+    } else {
+      // no duplicates, go ahead and add project
+
+      database('projects').insert({
+        name: projectName
+      }, '*')
+      .then(project => {
+        response.status(201).json(Object.assign({status: 201}, project[0])); // why are we sending back the id of the newly created project? Why not the entire obj?
+      })
+      .catch(error => {
+        response.status(500).json(Object.assign({ status: 201 },{ error }));
+      });
+
+    }
   })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+
 
 });
 

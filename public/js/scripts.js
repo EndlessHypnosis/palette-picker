@@ -1,4 +1,8 @@
 // TODO: Go through and append $ to jQuery variables
+// TODO: Make sure project names are checked for uniqueness
+// TODO: Clear Inputs on adding project/palette
+// TODO: Clicking an existing palette should load those colors into main swatches
+// TODO: Need to add button to delete palette
 
 // do this once when the page loads
 $(document).ready(function () {
@@ -56,7 +60,7 @@ const getPalettes = () => {
     } else {
 
       palettes.forEach(palette => {
-        divBuilder = $("<div>", { id: "id", "class": "class-name" });
+        divBuilder = $("<div>", { id: `${palette.id}-${palette.name.replace(/ /g, '')}`, "class": "div-palettes-saved" });
         var paletteName = $(`<div>${palette.name}</div>`)
         divBuilder.append(paletteName);
 
@@ -100,6 +104,8 @@ const buildSwatchesArray = () => {
   }
   return swatchesArray;
 }
+
+
 
 
 const savePalette = (e) => {
@@ -146,10 +152,19 @@ const createProject = (e) => {
     },
     body: JSON.stringify({ projectName: newProjectName})
   })
-  .then(data => {
-    console.log('Created Project: ', data)
-    // refresh dropdown
-    getProjects();
+  .then(data => data.json())
+  .then(response => {
+    console.log('Created Project: ', response)
+    if (response.status == 201) {
+      // refresh dropdown
+      getProjects();
+    }
+
+    if (response.status == 409) {
+      // console.log(response.error)
+      alert(response.error)
+    }
+
   })
 }
 
