@@ -1,5 +1,5 @@
 // TODO: Go through and append $ to jQuery variables
-// TODO: Make sure project names are checked for uniqueness
+// TODO: [done] Make sure project names are checked for uniqueness
 // TODO: Clear Inputs on adding project/palette
 // TODO: Clicking an existing palette should load those colors into main swatches
 // TODO: Need to add button to delete palette
@@ -10,7 +10,6 @@ $(document).ready(function () {
   getProjects();
   getPalettes();
 })
-
 
 const getProjects = () => {
   const dropDownList = $('#select-project-list');
@@ -131,7 +130,10 @@ const savePalette = (e) => {
     .then(data => {
       console.log('Added Palette: ', data);
       getPalettes();
+      // clear input
+      $('#input-save-palette').val('');
     })
+    .catch(error => console.log('Error Saving Palette:', error))
 
   } else {
     alert('Please create a project before saving a palette');
@@ -158,6 +160,8 @@ const createProject = (e) => {
     if (response.status == 201) {
       // refresh dropdown
       getProjects();
+      // clear input
+      $('#input-create-project').val('');
     }
 
     if (response.status == 409) {
@@ -166,6 +170,7 @@ const createProject = (e) => {
     }
 
   })
+  .catch(error => console.log('Error Creating Project', error))
 }
 
 const LockUnlock = (e) => {
@@ -189,12 +194,20 @@ $('#btn-gen-new-palette').on('click', genNewPalette);
 
 $('#formSavePalette').on('submit', e => {
   e.preventDefault();
-  savePalette(e);
+  if ($('#input-save-palette').val().length > 0) {
+    savePalette(e);
+  } else {
+    alert('Please enter a palette name first.')
+  }
 });
 
 $('#formCreateProject').on('submit', e => {
   e.preventDefault();
-  createProject(e);
+  if ($('#input-create-project').val().length > 0) {
+    createProject(e);
+  } else {
+    alert('Please enter a project name first.')
+  }
 });
 
 $('.div-color-drop').on('click', (e) => {

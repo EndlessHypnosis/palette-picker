@@ -1,6 +1,7 @@
 // TODO: have a comment on every line
 // TODO: modify the palette get endpoint to join to
 //       projects table to get the name of the project
+// QUESTION: how do I properly construct the response payload (status/body)
 
 
 // APP.USE = applying middleware
@@ -98,6 +99,7 @@ app.post('/api/v1/projects', (request, response) => {
     })
     // if something was found, that means we have a duplicate
     if (projectsFiltered.length > 0) {
+
       response
       .status(409)
       .json({
