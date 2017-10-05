@@ -3,7 +3,7 @@
 // do this once when the page loads
 $(document).ready(function () {
   genNewPalette();
-  //getProjects();
+  getProjects();
 })
 
 
@@ -11,18 +11,18 @@ const getProjects = () => {
 
   const dropDownList = $('#select-project-list')
 
-  fetch('http://localhost:3000/api/projects')
+  fetch('/api/v1/projects')
   .then(result => result.json())
   .then(projects => {
     // console.log('THIS IS Projects:', projects)
-    let projectNames = Object.keys(projects);
+    // let projectNames = Object.keys(projects);
 
     dropDownList.children().remove();
 
-    projectNames.forEach(project => {
+    projects.forEach(project => {
       dropDownList.append($('<option>', {
-        value: project,
-        text: project
+        value: project.id,
+        text: project.name
       }));
     })
 
@@ -74,7 +74,7 @@ const createProject = (e) => {
   console.log('create project form hit', e);
   const newProjectName = $('#input-create-project').val();
   
-  fetch('http://localhost:3000/api/projects', {
+  fetch('/api/v1/projects', {
     method: 'post',
     headers: {
       'Accept': 'application/json, text/plain, */*',
@@ -83,7 +83,7 @@ const createProject = (e) => {
     body: JSON.stringify({ projectName: newProjectName})
   })
   .then(data => {
-    console.log('Create Project: ', data)
+    console.log('Created Project: ', data)
     // refresh dropdown
     getProjects();
   })

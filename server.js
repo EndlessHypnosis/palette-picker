@@ -52,7 +52,6 @@ app.get('/api/v1/projects', (request, response) => {
   .catch(error => {
     response.status(500).json({ error });
   });
-
 });
 
 // Get all palettes
@@ -65,20 +64,50 @@ app.get('/api/v1/palettes', (request, response) => {
   .catch(error => {
     response.status(500).json({ error });
   });
-
 });
-
-
 
 // Create new project
-app.post('/api/projects', (request, response) => {
+app.post('/api/v1/projects', (request, response) => {
 
-  // const id = Date.now();
   const { projectName } = request.body;
+  console.log('add project in api:', projectName);
+  
 
-  app.locals.projects[projectName] = [];
-  response.sendStatus(201);
+  if (!projectName || projectName.length < 1) {
+    return response
+      .status(422)
+      .send({ error: 'Project NOT Added: Please submit a name for the project' })
+  }
+
+  database('projects').insert({
+    name: projectName
+  }, 'id')
+    .then(project => {
+      response.status(201).json({ id: project[0] }); // why are we sending back the id of the newly created project? Why not the entire obj?
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Get all palettes
 // app.get('/api/palettes', (request, response) => {
@@ -91,6 +120,7 @@ app.get('/api/palettes', (request, response) => {
 
   // do the stuff that adds the palette with project link
 })
+
 
 
 
