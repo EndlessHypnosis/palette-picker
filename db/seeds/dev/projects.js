@@ -33,22 +33,46 @@ let projectData = [{
 }];
 
 
+const createProject = (knex, project) => {
+  return knex('projects').insert({
+    name: project.name
+  }, 'id')
+  .then(projectId => {
+
+    // now construct the palette promises
+    let palettePromises = [];
+    // will need to construct new payload for the palette with the project id
+    let palettePayload;
+
+    project.palettes.forEach(palette => {
+      palettePayload = Object.assign(palette, {project_id: projectId[0]});
+      palettePromises.push(createPalette(knex, palettePayload));
+    });
+
+    return Promise.all(palettePromises);
+
+  });
+};
+
+const createPalette = (knex, palette) => {
+  return knex('palettes').insert(palette);
+};
+
+
 exports.seed = function (knex, Promise) {
   // Delete all table rows first
   return knex('palettes').del()
     .then(() => knex('projects').del())
+    // now that the data is clean, insert new data
     .then(() => {
 
-      let palettesPromises = [];
+      let projectPromises = [];
 
+      projectData.forEach(project => {
+        projectPromises.push(createProject(knex, project));
+      });
 
-
-
-      return Promise.all([
-        // Inserts seed entries
-        knex('table_name').insert({ id: 1, colName: 'rowValue1' }),
-        knex('table_name').insert({ id: 2, colName: 'rowValue2' }),
-        knex('table_name').insert({ id: 3, colName: 'rowValue3' })
-      ]);
-    });
+      return Promise.all(projectPromises);
+    })
+    .catch(error => console.log('Error seeding data:', error));
 };
