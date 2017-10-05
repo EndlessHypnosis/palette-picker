@@ -31,6 +31,7 @@ const getProjects = () => {
   })
 }
 
+
 const genNewPalette = () => {
   let randomColor;
   let lockIcon;
@@ -48,11 +49,21 @@ const genNewPalette = () => {
   }
 }
 
+
+const buildSwatchesArray = () => {
+  let swatchesArray = [];
+  for (let i = 1; i < 6; i++) {
+    swatchesArray.push($(`#lbl-color${i}-hex`).text());
+  }
+  return swatchesArray;
+}
+
+
 const savePalette = (e) => {
   console.log('save palette form hit', e);
   const newPaletteName = $('#input-save-palette').val();
 
-  fetch('http://localhost:3000/api/palettes', {
+  fetch('/api/v1/palettes', {
     method: 'post',
     headers: {
       'Accept': 'application/json, text/plain, */*',
@@ -60,8 +71,8 @@ const savePalette = (e) => {
     },
     body: JSON.stringify(
       { paletteName: newPaletteName, 
-        projectLink: $('#select-project-list').find(":selected").text(),
-        paletteColors: ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b']
+        projectLink: $('#select-project-list').find(":selected").val(),
+        swatchesList: buildSwatchesArray()  // ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b']
       }
     )
   })

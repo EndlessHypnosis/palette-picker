@@ -92,7 +92,7 @@ const createProject = (knex, project) => {
 
 
 
-
+// do we really need a separate function for this?
 const createPalette = (knex, palette) => {
   return knex('palettes').insert(palette);
 };
