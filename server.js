@@ -1,4 +1,6 @@
 // TODO: have a comment on every line
+// TODO: modify the palette get endpoint to join to
+//       projects table to get the name of the project
 
 // setup express
 // bring in the express library

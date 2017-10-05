@@ -1,23 +1,29 @@
-
+// TODO: Go through and append $ to jQuery variables
 
 // do this once when the page loads
 $(document).ready(function () {
   genNewPalette();
   getProjects();
+  getPalettes();
 })
 
 
 const getProjects = () => {
-
-  const dropDownList = $('#select-project-list')
+  const dropDownList = $('#select-project-list');
 
   fetch('/api/v1/projects')
   .then(result => result.json())
   .then(projects => {
     // console.log('THIS IS Projects:', projects)
     // let projectNames = Object.keys(projects);
-
     dropDownList.children().remove();
+
+    if (projects.length === 0) {
+      dropDownList.append($('<option>', {
+        value: 'INVALID',
+        text: '< Create New Project >'
+      }));
+    }
 
     projects.forEach(project => {
       dropDownList.append($('<option>', {
@@ -26,10 +32,47 @@ const getProjects = () => {
       }));
     })
 
+  })
+}
 
+const getPalettes = () => {
+  let containerForPalettes = $('#container-for-projects');
+
+  fetch('/api/v1/palettes')
+  .then(result => result.json())
+  .then(palettes => {
+    console.log('what is palletes on get palettes:', palettes);
+    containerForPalettes.empty();
+
+    let divBuilder;
+
+    if (palettes.length === 0) {
+
+      divBuilder = $("<div>", { id: "div-palettes-none", "class": "header-med" });
+      divBuilder.text('There are no saved palettes :(')
+      // $div.click(function () { /* ... */ });
+      containerForPalettes.append(divBuilder);
+      
+    } else {
+
+      palettes.forEach(palette => {
+        divBuilder = $("<div>", { id: "id", "class": "class-name" });
+        var paletteName = $(`<div>${palette.name}</div>`)
+        divBuilder.append(paletteName);
+
+        palette.swatches.forEach(swatch => {
+          divBuilder.append($(`<div>${swatch}</div>`))
+        })
+
+        containerForPalettes.append(divBuilder);
+      })
+      
+    }
 
   })
 }
+
+
 
 
 const genNewPalette = () => {
@@ -62,23 +105,33 @@ const buildSwatchesArray = () => {
 const savePalette = (e) => {
   console.log('save palette form hit', e);
   const newPaletteName = $('#input-save-palette').val();
+  const selectedProjectId = $('#select-project-list').find(":selected").val();
 
-  fetch('/api/v1/palettes', {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(
-      { paletteName: newPaletteName, 
-        projectLink: $('#select-project-list').find(":selected").val(),
-        swatchesList: buildSwatchesArray()  // ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b']
-      }
-    )
-  })
-  .then(data => {
-    console.log('Added Palette: ', data)
-  })
+  if (selectedProjectId !== 'INVALID') {
+
+    fetch('/api/v1/palettes', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        { paletteName: newPaletteName, 
+          projectLink: selectedProjectId,
+          swatchesList: buildSwatchesArray()  // ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b']
+        }
+      )
+    })
+    .then(data => {
+      console.log('Added Palette: ', data);
+      getPalettes();
+    })
+
+  } else {
+    alert('Please create a project before saving a palette');
+  }
+
+
 }
 
 const createProject = (e) => {
