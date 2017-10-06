@@ -36,7 +36,6 @@ describe('Client Routes', () => {
 });
 
 
-
 // Endpoint tests
 describe('API Routes', () => {
 
@@ -189,8 +188,6 @@ describe('API Routes', () => {
   });
 
 
-
-
   describe('POST /api/v1/palettes', () => {
 
     it('should be able to insert a new palettes', done => {
@@ -212,7 +209,6 @@ describe('API Routes', () => {
             })
             .end((error, response) => {
               response.should.have.status(201);
-
               // Now make sure there are 8 palettes
               chai.request(server)
                 .get('/api/v1/palettes')
@@ -229,7 +225,6 @@ describe('API Routes', () => {
 
 
     it('should should return 422 if bad input', done => {
-
       // Now try to insert the new project
       chai.request(server)
         .post('/api/v1/palettes')
@@ -243,11 +238,8 @@ describe('API Routes', () => {
             .equal('Palette Not Added: Invalid Input');
           done();
         });
-
     });
-
   });
-
 
 
   describe('DELETE /api/v1/palettes/:id', () => {
@@ -261,7 +253,7 @@ describe('API Routes', () => {
           response.body.should.be.a('array');
           response.body.length.should.equal(7);
           let randomPaletteId = response.body[0].id;
-          
+
           // Now delete the palette
           chai.request(server)
             .delete(`/api/v1/palettes/${randomPaletteId}`)

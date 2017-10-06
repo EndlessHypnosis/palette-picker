@@ -1,9 +1,3 @@
-// TODO: have a comment on every line
-// TODO: [done] modify the palette get endpoint to join to
-//       projects table to get the name of the project
-// QUESTION: how do I properly construct the response payload (status/body)
-
-
 
 // SETUP: express
 // bring in the express library
@@ -78,7 +72,7 @@ app.post('/api/v1/projects', (request, response) => {
       .json({ 
         status: 422,
         error: 'Project NOT Added: Please submit a name for the project.' 
-      })
+      });
   }
 
   // check if project name is unique
@@ -87,7 +81,7 @@ app.post('/api/v1/projects', (request, response) => {
     // check if any project names match
     let projectsFiltered = projects.filter(project => {
       return project.name === projectName;
-    })
+    });
     // if a match was found, that means we have a duplicate
     if (projectsFiltered.length > 0) {
       // can't add duplicate project names, send back client error
@@ -96,7 +90,7 @@ app.post('/api/v1/projects', (request, response) => {
       .json({
         status: 409,
         error: 'Project name already used: Please choose a new name.' 
-      })
+      });
     } else {
       // no duplicates, go ahead and add project
       database('projects').insert({
@@ -130,7 +124,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
     // something went wrong, send an error back
     response.status(500).json({ error });
   });
-})
+});
 
 // Add palette to project
 app.post('/api/v1/palettes', (request, response) => {
@@ -145,7 +139,7 @@ app.post('/api/v1/palettes', (request, response) => {
     // kinda still feels hacky...but not sure what's a cleaner approach.
     return response
       .status(422)
-      .send({ error: 'Palette Not Added: Invalid Input' })
+      .send({ error: 'Palette Not Added: Invalid Input' });
   }
   // everything good, insert the new palette
   database('palettes').insert({
