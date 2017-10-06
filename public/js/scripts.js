@@ -1,4 +1,8 @@
 // TODO: Go through and append $ to jQuery variables
+// TODO: [done] Make sure project names are checked for uniqueness
+// TODO: Clear Inputs on adding project/palette
+// TODO: Clicking an existing palette should load those colors into main swatches
+// TODO: Need to add button to delete palette
 
 // do this once when the page loads
 $(document).ready(function () {
@@ -6,7 +10,6 @@ $(document).ready(function () {
   getProjects();
   getPalettes();
 })
-
 
 const getProjects = () => {
   const dropDownList = $('#select-project-list');
@@ -55,17 +58,46 @@ const getPalettes = () => {
       
     } else {
 
-      palettes.forEach(palette => {
-        divBuilder = $("<div>", { id: "id", "class": "class-name" });
-        var paletteName = $(`<div>${palette.name}</div>`)
-        divBuilder.append(paletteName);
+      // console.log('what do pallets look like again', palettes)
 
-        palette.swatches.forEach(swatch => {
-          divBuilder.append($(`<div>${swatch}</div>`))
+      let projectNameList = palettes.reduce((acum, palette) => {
+
+        if (!acum.includes(palette.project_name)) {
+          acum.push(palette.project_name);
+        }
+        return acum;
+      }, []);
+
+      // console.log('what is the project list:', projectNameList);
+      
+      projectNameList.forEach(project => {
+
+        let projectContainer = $("<div>", { id: `${project.replace(/ /g, '')}`, "class": "div-project-container" });
+        let projectHeader = $(`<h2>${project}</h2>`);
+        projectContainer.append(projectHeader);
+        
+        let filteredPalettes = palettes.filter(palette => palette.project_name === project)
+
+        filteredPalettes.forEach(palette => {
+          let paletteContainer = $("<div>", { id: `${palette.id}-${palette.name.replace(/ /g, '')}`, "class": "div-palette-container" });
+          
+          var paletteHeader = $(`<h2>${palette.name}</h2>`)
+          paletteContainer.append(paletteHeader);
+  
+          palette.swatches.forEach(swatch => {
+            let swatchDiv = $(`<div>${swatch}</div>`);
+            swatchDiv.css('background-color', swatch)
+            paletteContainer.append(swatchDiv)
+          })
+
+          // add the palette to the project container
+          projectContainer.append(paletteContainer);
+  
         })
-
-        containerForPalettes.append(divBuilder);
+        // add the project to the master container
+        containerForPalettes.append(projectContainer);
       })
+
       
     }
 
@@ -102,6 +134,8 @@ const buildSwatchesArray = () => {
 }
 
 
+
+
 const savePalette = (e) => {
   console.log('save palette form hit', e);
   const newPaletteName = $('#input-save-palette').val();
@@ -125,7 +159,10 @@ const savePalette = (e) => {
     .then(data => {
       console.log('Added Palette: ', data);
       getPalettes();
+      // clear input
+      $('#input-save-palette').val('');
     })
+    .catch(error => console.log('Error Saving Palette:', error))
 
   } else {
     alert('Please create a project before saving a palette');
@@ -146,11 +183,23 @@ const createProject = (e) => {
     },
     body: JSON.stringify({ projectName: newProjectName})
   })
-  .then(data => {
-    console.log('Created Project: ', data)
-    // refresh dropdown
-    getProjects();
+  .then(data => data.json())
+  .then(response => {
+    console.log('Created Project: ', response)
+    if (response.status == 201) {
+      // refresh dropdown
+      getProjects();
+      // clear input
+      $('#input-create-project').val('');
+    }
+
+    if (response.status == 409) {
+      // console.log(response.error)
+      alert(response.error)
+    }
+
   })
+  .catch(error => console.log('Error Creating Project', error))
 }
 
 const LockUnlock = (e) => {
@@ -174,12 +223,20 @@ $('#btn-gen-new-palette').on('click', genNewPalette);
 
 $('#formSavePalette').on('submit', e => {
   e.preventDefault();
-  savePalette(e);
+  if ($('#input-save-palette').val().length > 0) {
+    savePalette(e);
+  } else {
+    alert('Please enter a palette name first.')
+  }
 });
 
 $('#formCreateProject').on('submit', e => {
   e.preventDefault();
-  createProject(e);
+  if ($('#input-create-project').val().length > 0) {
+    createProject(e);
+  } else {
+    alert('Please enter a project name first.')
+  }
 });
 
 $('.div-color-drop').on('click', (e) => {
