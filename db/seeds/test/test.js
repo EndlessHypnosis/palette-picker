@@ -43,16 +43,12 @@ let projectData = [{
   }]
 }];
 
-
 const createProject = (knex, project) => {
   return knex('projects').insert({
     name: project.name
   }, 'id')
     .then(projectId => {
-
-      // now construct the palette promises
       let palettePromises = [];
-      // will need to construct new payload for the palette with the project id
       let palettePayload;
 
       project.palettes.forEach(palette => {
@@ -61,21 +57,15 @@ const createProject = (knex, project) => {
         // need to stringify the array so that postreSQL
         // doesn't think it's a data type array (it's really json)
         palettePayload.swatches = JSON.stringify(palettePayload.swatches);
-
         palettePromises.push(createPalette(knex, palettePayload));
       });
-
       return Promise.all(palettePromises);
-
     });
 };
 
-
-// do we really need a separate function for this?
 const createPalette = (knex, palette) => {
   return knex('palettes').insert(palette);
 };
-
 
 exports.seed = function (knex, Promise) {
   // Delete all table rows first
@@ -83,13 +73,10 @@ exports.seed = function (knex, Promise) {
     .then(() => knex('projects').del())
     // now that the data is clean, insert new data
     .then(() => {
-
       let projectPromises = [];
-
       projectData.forEach(project => {
         projectPromises.push(createProject(knex, project));
       });
-
       return Promise.all(projectPromises);
     })
     .catch(error => console.log('Error seeding data:', error));
