@@ -1,4 +1,3 @@
-
 let projectData = [{
   name: 'project 1',
   palettes: [{
@@ -45,9 +44,6 @@ let projectData = [{
 }];
 
 
-
-
-
 const createProject = (knex, project) => {
   return knex('projects').insert({
     name: project.name
@@ -75,13 +71,10 @@ const createProject = (knex, project) => {
 };
 
 
-
 // do we really need a separate function for this?
 const createPalette = (knex, palette) => {
   return knex('palettes').insert(palette);
 };
-
-
 
 
 exports.seed = function (knex, Promise) {

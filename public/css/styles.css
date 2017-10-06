@@ -10,13 +10,26 @@
 }
 
 .div-color-drop {
+  display: flex;
+  justify-content: center;
   padding: 10px;
   border: 1px solid darkslategrey;
   border-radius: 5px;
+  margin: 0 4px 10px 4px;
+  cursor: pointer;
+  height: 95px;
+  width: 95px;
 }
 
-.div-color-drop {
-  cursor: pointer;
+.div-color-inlet {
+  background-color: white;
+  opacity: 0.5;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 50px;
+  padding: 5px;
 }
 
 .lbl-color-hex {
@@ -39,4 +52,214 @@
 
 .delete-palette:hover {
   color: darkgray;
+}
+
+.header-med {
+  padding: 20px 5px;
+  font-size: 20px;
+}
+
+
+
+
+.input-primary {
+  outline: none;
+  padding: 6px;
+  border: 1px solid darkgrey;
+  border-radius: 3px;
+  color: #727578;
+  font-size: 18px;
+  margin: 10px;
+  box-shadow: inset 0px 0px 5px 0px rgba(119, 119, 119, 0.75);
+  -moz-box-shadow: inset 0px 0px 5px 0px rgba(119, 119, 119, 0.75);
+}
+
+.input-primary::placeholder {
+  color: darkgrey;
+}
+
+
+.card-skinny-btn {
+  cursor: pointer;
+  outline: none;
+  padding: 10px;
+  border: 1px solid #c5d2da;
+  border-left: 0;
+  border-radius: 0 5px 5px 0;
+  background-color: #3fb7c0;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+
+.card-skinny {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.card-skinny-span {
+  padding: 10px;
+  border: 1px solid #c5d2da;
+  border-radius: 5px;
+  color: #727578;
+  flex: 1;
+  font-size: 14px;
+}
+
+.div-palette-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.main-palette-container {
+  display: flex;
+}
+
+.saved-swatch {
+  width: 100%;
+}
+
+.swatch-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #c5d2da;
+  border-radius: 3px;
+  margin: 4px;
+}
+
+.card-skinny-btn {
+  cursor: pointer;
+  outline: none;
+  padding: 10px;
+  border: 1px solid #c5d2da;
+  border-left: 0;
+  border-radius: 5px;
+  background-color: #3fb7c0;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+
+
+.btn-primary {
+  cursor: pointer;
+  font-size: 22px;
+  text-decoration: none;
+  color: mediumpurple;
+  border: 1px solid slategray;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: linear-gradient(to right, #ece9e6, #ffffff);
+  box-shadow: 0px 0px 5px 0px rgba(119, 119, 119, 0.75);
+}
+
+
+.btn-primary:hover {
+  background: mediumpurple;
+  color: #ffffff;
+}
+
+
+
+
+.app-core {
+  font-size: 16px;
+  font-family: 'Ubuntu', sans-serif;
+  color: #727578;
+  display: flex;
+  width: 100vw;
+  background-image: url('../images/bg_bw.jpg');
+  background-size: contain;
+}
+
+
+.app-wrapper {
+  min-width: 945px;
+  max-width: 945px;
+  min-height: 100vh;
+  margin: 30px auto;
+  background-color: #ffffff;
+  
+  box-shadow: 0px 0px 10px 2px rgba(119, 119, 119, 0.8);
+  -moz-box-shadow: 0px 0px 10px 2px rgba(119, 119, 119, 0.8);
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(119, 119, 119, 0.8);
+
+  opacity: 0.9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.holygrail-header {
+  min-width: 945px;
+  min-height: 312px;
+  background-color: #ffffff;
+  background-image: url('../images/waves_top.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.holygrail-header h1 {
+  margin: 70px auto;
+  color: orangered;
+}
+
+.holygrail-body {
+  display: flex;
+  flex: 1;
+}
+
+.holygrail-content {
+  flex: 1;
+}
+
+.holygrail-left, .holygrail-right {
+  flex: 0 0 12em;
+}
+
+.holygrail-left {
+  order: -1;
+  margin-left: 10px;
+}
+
+.holygrail-footer {
+  min-width: 945px;
+  min-height: 223px;
+  background-color: #ffffff;
+  background-image: url('../images/waves_bottom.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  opacity: 0.85;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-span {
+  padding-top: 190px;
+  padding-left: 20px;
+}
+
+.ubuntu-dark-small {
+  font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: darkslategray;
 }
