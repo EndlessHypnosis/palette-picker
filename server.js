@@ -125,6 +125,23 @@ app.post('/api/v1/projects', (request, response) => {
 
 });
 
+// Delete palette
+
+app.delete('/api/v1/palettes/:id', (request, response) => {
+  const paletteIdToDelete = request.params.id;
+  console.log('API delete paleette:', paletteIdToDelete);
+
+  database('palettes')
+  .where('id', paletteIdToDelete)
+  .del()
+  .then(palette => {
+    response.sendStatus(200);
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
+  
+})
 
 // Add palette to project
 app.post('/api/v1/palettes', (request, response) => {

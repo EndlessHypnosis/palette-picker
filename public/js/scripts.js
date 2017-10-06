@@ -80,9 +80,22 @@ const getPalettes = () => {
 
         filteredPalettes.forEach(palette => {
           let paletteContainer = $("<div>", { id: `${palette.id}-${palette.name.replace(/ /g, '')}`, "class": "div-palette-container" });
+          paletteContainer.click((event) => {
+            // only swap palettes if they're not deleteing the palette
+            if (!$(event.target).hasClass('delete-palette')) {
+              swapPalette(event, palette.swatches);
+            }
+
+          });
           
-          var paletteHeader = $(`<h2>${palette.name}</h2>`)
+          let paletteHeader = $(`<h2>${palette.name}</h2>`)
           paletteContainer.append(paletteHeader);
+
+          let deleteBtn = $(`<i id=${palette.id} class="icon ion-trash-a delete-palette"></i>`);
+          deleteBtn.click((event) => {
+            deletePalette(event, palette.id);
+          });
+          paletteContainer.append(deleteBtn);
   
           palette.swatches.forEach(swatch => {
             let swatchDiv = $(`<div>${swatch}</div>`);
@@ -106,6 +119,27 @@ const getPalettes = () => {
 
 
 
+const deletePalette = (event, paletteId) => {
+  console.log('delete palette with ID:', paletteId);
+
+  fetch(`/api/v1/palettes/${paletteId}`, {
+    method: 'delete',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      console.log('response from delete:', response);
+      // add notify here
+
+      // Let's reload the palettes to clear the deleted one
+      getPalettes();
+    })
+    .catch(error => console.log('Error Saving Palette:', error))
+}
+
+
 
 const genNewPalette = () => {
   let randomColor;
@@ -122,6 +156,23 @@ const genNewPalette = () => {
     }
 
   }
+}
+
+const swapPalette = (event, swatchesList) => {
+  console.log('EVENT:', event);
+  
+  let lockIcon;
+  swatchesList.forEach((swatch, index) => {
+    index++;
+    // don't set swatch if locked
+    lockIcon = $(`#icon-color${index}-lock`);
+
+    if (lockIcon.hasClass('ion-unlocked')) {
+      $(`#div-color${index}`).css('background-color', swatch);
+      $(`#lbl-color${index}-hex`).text(swatch);
+    }
+
+  })
 }
 
 
