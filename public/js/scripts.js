@@ -58,17 +58,46 @@ const getPalettes = () => {
       
     } else {
 
-      palettes.forEach(palette => {
-        divBuilder = $("<div>", { id: `${palette.id}-${palette.name.replace(/ /g, '')}`, "class": "div-palettes-saved" });
-        var paletteName = $(`<div>${palette.name}</div>`)
-        divBuilder.append(paletteName);
+      // console.log('what do pallets look like again', palettes)
 
-        palette.swatches.forEach(swatch => {
-          divBuilder.append($(`<div>${swatch}</div>`))
+      let projectNameList = palettes.reduce((acum, palette) => {
+
+        if (!acum.includes(palette.project_name)) {
+          acum.push(palette.project_name);
+        }
+        return acum;
+      }, []);
+
+      // console.log('what is the project list:', projectNameList);
+      
+      projectNameList.forEach(project => {
+
+        let projectContainer = $("<div>", { id: `${project.replace(/ /g, '')}`, "class": "div-project-container" });
+        let projectHeader = $(`<h2>${project}</h2>`);
+        projectContainer.append(projectHeader);
+        
+        let filteredPalettes = palettes.filter(palette => palette.project_name === project)
+
+        filteredPalettes.forEach(palette => {
+          let paletteContainer = $("<div>", { id: `${palette.id}-${palette.name.replace(/ /g, '')}`, "class": "div-palette-container" });
+          
+          var paletteHeader = $(`<h2>${palette.name}</h2>`)
+          paletteContainer.append(paletteHeader);
+  
+          palette.swatches.forEach(swatch => {
+            let swatchDiv = $(`<div>${swatch}</div>`);
+            swatchDiv.css('background-color', swatch)
+            paletteContainer.append(swatchDiv)
+          })
+
+          // add the palette to the project container
+          projectContainer.append(paletteContainer);
+  
         })
-
-        containerForPalettes.append(divBuilder);
+        // add the project to the master container
+        containerForPalettes.append(projectContainer);
       })
+
       
     }
 
