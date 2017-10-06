@@ -1,11 +1,12 @@
-// TODO: Go through and append $ to jQuery variables
+// TODO: [nope] Go through and append $ to jQuery variables
 // TODO: [done] Make sure project names are checked for uniqueness
-// TODO: Clear Inputs on adding project/palette
-// TODO: Clicking an existing palette should load those colors into main swatches
-// TODO: Need to add button to delete palette
+// TODO: [done] Clear Inputs on adding project/palette
+// TODO: [done] Clicking an existing palette should load those colors into main swatches
+// TODO: [done] Need to add button to delete palette
 // TODO: move server comments to own branch
 // TODO: add readme
-// TODO: Add notify?
+// TODO: [nope] Add notify?
+// TODO: remove DEV seed data
 
 // do this once when the page loads
 $(document).ready(function () {
@@ -55,7 +56,7 @@ const getPalettes = () => {
     if (palettes.length === 0) {
 
       divBuilder = $("<div>", { id: "div-palettes-none", "class": "header-med" });
-      divBuilder.text('There are no saved palettes :(')
+      divBuilder.text('There are no saved palettes.')
       // $div.click(function () { /* ... */ });
       containerForPalettes.append(divBuilder);
       
@@ -75,9 +76,13 @@ const getPalettes = () => {
       
       projectNameList.forEach(project => {
 
-        let projectContainer = $("<div>", { id: `${project.replace(/ /g, '')}`, "class": "div-project-container" });
-        let projectHeader = $(`<h2>${project}</h2>`);
+
+
+        let projectContainer = $("<div>", { id: `${project.replace(/ /g, '')}`, "class": "div-project-container card-skinny card-skinny-span" });
+        let projectHeader = $(`<h2>Saved Palettes for Project: ${project}</h2>`);
         projectContainer.append(projectHeader);
+
+        let masterPaletteContainer = $("<div>", { "class": "main-palette-container" });
         
         let filteredPalettes = palettes.filter(palette => palette.project_name === project)
 
@@ -91,7 +96,7 @@ const getPalettes = () => {
 
           });
           
-          let paletteHeader = $(`<h2>${palette.name}</h2>`)
+          let paletteHeader = $(`<h3>${palette.name}</h3>`)
           paletteContainer.append(paletteHeader);
 
           let deleteBtn = $(`<i id=${palette.id} class="icon ion-trash-a delete-palette"></i>`);
@@ -99,18 +104,22 @@ const getPalettes = () => {
             deletePalette(event, palette.id);
           });
           paletteContainer.append(deleteBtn);
+
+          let swatchContainer = $("<div>", { "class": "swatch-container" });
   
           palette.swatches.forEach(swatch => {
-            let swatchDiv = $(`<div>${swatch}</div>`);
+            let swatchDiv = $(`<div class='saved-swatch'>${swatch}</div>`);
             swatchDiv.css('background-color', swatch)
-            paletteContainer.append(swatchDiv)
+            swatchContainer.append(swatchDiv)
           })
+          paletteContainer.append(swatchContainer)
 
           // add the palette to the project container
-          projectContainer.append(paletteContainer);
+          masterPaletteContainer.append(paletteContainer);
   
         })
         // add the project to the master container
+        projectContainer.append(masterPaletteContainer);
         containerForPalettes.append(projectContainer);
       })
 

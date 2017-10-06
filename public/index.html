@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+  <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,500,500i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nova+Square" rel="stylesheet">
+
   <link href="css/normalize.css" type="text/css" rel="stylesheet">
   <link href="css/ionicons.css" type="text/css" rel="stylesheet">
   <link href="css/styles.css" type="text/css" rel="stylesheet">
@@ -12,58 +17,99 @@
   <title>Palette Picker By Nick Svetnicka</title>
 </head>
 <body>
-  <header>
-    <h1>Palette Picker</h1>
-  </header>
 
-  <main>
 
-    <section id='section-color-drops'>
 
-      <div id='div-color1' data-icon='icon-color1-lock' class='div-color-drop'>
-        <label id='lbl-color1-hex' class='lbl-color-hex'></label>
-        <span id='span-color1-lock'><i id='icon-color1-lock' class="icon ion-unlocked lock-green"></i></span>
+
+
+
+
+  <div class='app-core'>
+    <div class='app-wrapper'>
+
+
+      <div class='holygrail-header'>
+        <h1>Palette Picker</h1>
       </div>
 
-      <div id='div-color2' data-icon='icon-color2-lock' class='div-color-drop'>
-        <label id='lbl-color2-hex' class='lbl-color-hex'></label>
-        <span id='span-color2-lock'><i id='icon-color2-lock' class="icon ion-unlocked lock-green"></i></span>
+
+      <div class='holygrail-body'>
+
+        <div class='holygrail-content'>
+          <section id='section-color-drops'>
+
+            <div id='div-color1' data-icon='icon-color1-lock' class='div-color-drop'>
+              <div class='div-color-inlet'>
+                <label id='lbl-color1-hex' class='lbl-color-hex'></label>
+                <span id='span-color1-lock'><i id='icon-color1-lock' class="icon ion-unlocked lock-green"></i></span>
+              </div>
+            </div>
+
+            <div id='div-color2' data-icon='icon-color2-lock' class='div-color-drop'>
+              <div class='div-color-inlet'>
+                <label id='lbl-color2-hex' class='lbl-color-hex'></label>
+                <span id='span-color2-lock'><i id='icon-color2-lock' class="icon ion-unlocked lock-green"></i></span>
+              </div>
+            </div>
+
+            <div id='div-color3' data-icon='icon-color3-lock' class='div-color-drop'>
+              <div class='div-color-inlet'>
+                <label id='lbl-color3-hex' class='lbl-color-hex'></label>
+                <span id='span-color3-lock'><i id='icon-color3-lock' class="icon ion-unlocked lock-green"></i></span>
+              </div>
+            </div>
+
+            <div id='div-color4' data-icon='icon-color4-lock' class='div-color-drop'>
+              <div class='div-color-inlet'>
+                <label id='lbl-color4-hex' class='lbl-color-hex'></label>
+                <span id='span-color4-lock'><i id='icon-color4-lock' class="icon ion-unlocked lock-green"></i></span>
+              </div>
+            </div>
+
+            <div id='div-color5' data-icon='icon-color5-lock' class='div-color-drop'>
+              <div class='div-color-inlet'>
+                <label id='lbl-color5-hex' class='lbl-color-hex'></label>
+                <span id='span-color5-lock'><i id='icon-color5-lock' class="icon ion-unlocked lock-green"></i></span>
+              </div>
+            </div>
+          </section>
+
+          <button id='btn-gen-new-palette' class='btn-primary'>Generate New Palette</button>
+          
+          <div id='container-for-projects'></div>
+
+        </div>
+
+
+
+        <div class='holygrail-left'>
+
+          <div class="card-skinnysdf">
+            <span class="medium-text">Projects:</span>
+              <form id="formSavePalette" role="form">
+                <select id='select-project-list' class='input-primary' />
+    
+                <input id='input-save-palette' type='text' class='input-primary' placeholder='Palette Name' />
+                <button id='btn-save-palette' class='btn-primary' type='submit'>Save Palette</button>
+              </form>
+    
+              <form id='formCreateProject' role='form'>
+                <input id='input-create-project' type='text' class='input-primary' placeholder='Project Name' />
+                <button id='btn-create-project' class='btn-primary' type='submit'>Create Project</button>
+              </form>
+            
+          </div>
+
+
+        </div>
+
+        <div class='holygrail-right'>
+          &nbsp;
+        </div>
       </div>
-
-      <div id='div-color3' data-icon='icon-color3-lock' class='div-color-drop'>
-        <label id='lbl-color3-hex' class='lbl-color-hex'></label>
-        <span id='span-color3-lock'><i id='icon-color3-lock' class="icon ion-unlocked lock-green"></i></span>
-      </div>
-
-      <div id='div-color4' data-icon='icon-color4-lock' class='div-color-drop'>
-        <label id='lbl-color4-hex' class='lbl-color-hex'></label>
-        <span id='span-color4-lock'><i id='icon-color4-lock' class="icon ion-unlocked lock-green"></i></span>
-      </div>
-
-      <div id='div-color5' data-icon='icon-color5-lock' class='div-color-drop'>
-        <label id='lbl-color5-hex' class='lbl-color-hex'></label>
-        <span id='span-color5-lock'><i id='icon-color5-lock' class="icon ion-unlocked lock-green"></i></span>
-      </div>
-
-    </section>
-
-    <button id='btn-gen-new-palette'>Generate New Palette</button>
-
-    <form id="formSavePalette" role="form">
-      <select id='select-project-list' />
-      
-      <input id='input-save-palette' type='text' placeholder='Palette Name' />
-      <button id='btn-save-palette' type='submit'>Save Palette</button>
-    </form>
-
-    <form id='formCreateProject' role='form'>
-      <input id='input-create-project' type='text' placeholder='Project Name' />
-      <button id='btn-create-project' type='submit'>Create Project</button>
-    </form>
-
-    <div id='container-for-projects'></div>
-
-  </main>
+      <div class='holygrail-footer'><span class='footer-span ubuntu-dark-small'><i class="icon ion-ios-analytics"></i> palette picker built by Nick Svetnicka for Turing</span></div>
+    </div>
+  </div>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="js/scripts.js"></script>
