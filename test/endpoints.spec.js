@@ -43,9 +43,9 @@ describe('API Routes', () => {
   // Re-seed data between tests
   beforeEach(done => {
     database.seed.run()
-    .then(() => {
-      done();
-    })
+      .then(() => {
+        done();
+      })
   })
 
   describe('GET /api/v1/projects', () => {
@@ -156,112 +156,132 @@ describe('API Routes', () => {
             });
         });
     });
+
+
+    it('should should return 409 if name taken', done => {
+      // First make sure there is a project with name 'project 1'
+      chai.request(server)
+        .get('/api/v1/projects')
+        .end((error, response) => {
+          response.should.have.status(200);
+
+          let projectOne = response.body.filter(project => {
+            return project.name === 'project 1'
+          })
+          projectOne.length.should.equal(1);
+
+          // Now try to insert the new project
+          chai.request(server)
+            .post('/api/v1/projects')
+            .send({
+              projectName: 'project 1'
+            })
+            .end((error, response) => {
+              response.should.have.status(409);
+              response.body.should.have.property('error');
+              response.body.error.should
+                .equal('Project name already used: Please choose a new name.');
+              done();
+            });
+        });
+    });
+
   });
 
 
 
 
+  describe('POST /api/v1/palettes', () => {
 
-
-
-
-
-
-
-
-
-  describe('GET /api/v1/students/Turing', () => {
-
-    // happy path
-    it.skip('should return only the Turing student', done => {
+    it('should be able to insert a new palettes', done => {
+      // First make sure there are 7 palettes
       chai.request(server)
-        .get('/api/v1/students/Turing')
+        .get('/api/v1/palettes')
         .end((error, response) => {
           response.should.have.status(200);
-          response.should.be.json;
-          response.body.should.be.a('object');
+          response.body.should.be.a('array');
+          response.body.length.should.equal(7);
+          let randomProjectId = response.body[0].project_id;
+          // Now insert the new palette
+          chai.request(server)
+            .post('/api/v1/palettes')
+            .send({
+              paletteName: 'test palette',
+              projectLink: randomProjectId,
+              swatchesList: ['#98f30b', '#e3501c', '#4538bb', '#3cce59', '#fbdd13']
+            })
+            .end((error, response) => {
+              response.should.have.status(201);
 
-          response.body.should.have.property('lastname');
-          response.body.lastname.should.equal('Turing');
+              // Now make sure there are 8 palettes
+              chai.request(server)
+                .get('/api/v1/palettes')
+                .end((error, response) => {
+                  response.should.have.status(200);
+                  response.body.should.be.a('array');
+                  response.body.length.should.equal(8);
 
-          response.body.should.have.property('program');
-          response.body.program.should.equal('FE');
-
-          response.body.should.have.property('enrolled');
-          response.body.enrolled.should.equal(true);
-
-          done();
+                  done();
+                })
+            });
         });
     });
 
-    // sad path
-    it.skip('should return 404 for invalid last name', done => {
-      chai.request(server)
-        .get('/api/v1/students/foo')
-        .end((error, response) => {
-          response.should.have.status(404);
-          done();
-        })
-    })
 
-  })
+    it('should should return 422 if bad input', done => {
 
-  describe('POST /api/v1/students', () => {
-    it.skip('should create a new student', done => {
+      // Now try to insert the new project
       chai.request(server)
-        .post('/api/v1/students')
+        .post('/api/v1/palettes')
         .send({
-          lastname: 'Knuth',
-          program: 'FE',
-          enrolled: true
-        })
-        .end((error, response) => {
-          response.should.have.status(201);
-          response.body.should.be.a('object');
-
-          response.body.should.have.property('lastname');
-          response.body.lastname.should.equal('Knuth');
-
-          response.body.should.have.property('program');
-          response.body.program.should.equal('FE');
-
-          response.body.should.have.property('enrolled');
-          response.body.enrolled.should.equal(true);
-
-          chai.request(server)
-            .get('/api/v1/students')
-            .end((error, response) => {
-              response.should.have.status(200);
-              response.body.should.be.a('array');
-              response.body.length.should.equal(4);
-
-              // then we wouuld check if that object actually was added
-              // by checking last name is in array.
-              done();
-            })
-
-        })
-    })
-
-    it.skip('should not create a record with missing data', done => {
-      chai.request(server)
-        .post('/api/v1/students')
-        .send({
-          lastname: 'Knuth',
-          program: 'FE'
+          foo: 'bar'
         })
         .end((error, response) => {
           response.should.have.status(422);
-          // should say what field they were missing
-          response.body.error.should.equal('You are missing data');
+          response.body.should.have.property('error');
+          response.body.error.should
+            .equal('Palette Not Added: Invalid Input');
           done();
         });
 
-
     });
-
 
   });
 
+
+
+  describe('DELETE /api/v1/palettes/:id', () => {
+
+    it('should be able to delete a palette', done => {
+      // First make sure there are 7 palettes
+      chai.request(server)
+        .get('/api/v1/palettes')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('array');
+          response.body.length.should.equal(7);
+          let randomPaletteId = response.body[0].id;
+          
+          // Now delete the palette
+          chai.request(server)
+            .delete(`/api/v1/palettes/${randomPaletteId}`)
+            .end((error, response) => {
+              response.should.have.status(200);
+
+              // Now make sure there are 6 palettes
+              chai.request(server)
+                .get('/api/v1/palettes')
+                .end((error, response) => {
+                  response.should.have.status(200);
+                  response.body.should.be.a('array');
+                  response.body.length.should.equal(6);
+
+                  done();
+                })
+            });
+        });
+    });
+
+  });
 
 });
