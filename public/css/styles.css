@@ -30,3 +30,13 @@
 .lock-red {
   color: red;
 }
+
+.delete-palette {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+
+.delete-palette:hover {
+  color: darkgray;
+}
