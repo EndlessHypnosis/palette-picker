@@ -3,6 +3,9 @@
 // TODO: Clear Inputs on adding project/palette
 // TODO: Clicking an existing palette should load those colors into main swatches
 // TODO: Need to add button to delete palette
+// TODO: move server comments to own branch
+// TODO: add readme
+// TODO: Add notify?
 
 // do this once when the page loads
 $(document).ready(function () {

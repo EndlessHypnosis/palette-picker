@@ -33,26 +33,26 @@ const createProject = (knex, project) => {
   return knex('projects').insert({
     name: project.name
   }, 'id')
-  .then(projectId => {
+    .then(projectId => {
 
-    // now construct the palette promises
-    let palettePromises = [];
-    // will need to construct new payload for the palette with the project id
-    let palettePayload;
+      // now construct the palette promises
+      let palettePromises = [];
+      // will need to construct new payload for the palette with the project id
+      let palettePayload;
 
-    project.palettes.forEach(palette => {
-      // add project_id column
-      palettePayload = Object.assign(palette, {project_id: projectId[0]});
-      // need to stringify the array so that postreSQL
-      // doesn't think it's a data type array (it's really json)
-      palettePayload.swatches = JSON.stringify(palettePayload.swatches);
+      project.palettes.forEach(palette => {
+        // add project_id column
+        palettePayload = Object.assign(palette, { project_id: projectId[0] });
+        // need to stringify the array so that postreSQL
+        // doesn't think it's a data type array (it's really json)
+        palettePayload.swatches = JSON.stringify(palettePayload.swatches);
 
-      palettePromises.push(createPalette(knex, palettePayload));
+        palettePromises.push(createPalette(knex, palettePayload));
+      });
+
+      return Promise.all(palettePromises);
+
     });
-
-    return Promise.all(palettePromises);
-
-  });
 };
 
 
