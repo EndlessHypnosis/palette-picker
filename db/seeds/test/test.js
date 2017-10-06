@@ -1,27 +1,46 @@
 
 let projectData = [{
-  name: 'first project',
+  name: 'project 1',
   palettes: [{
-    name: 'first A palette',
+    name: 'palette 1-A',
     swatches: ['#fbdd13', '#3cce59', '#4538bb', '#e3501c', '#98f30b']
   },
   {
-    name: 'first B palette',
+    name: 'palette 1-B',
     swatches: ['#5ddee3', '#c2ebe3', '#6a4de9', '#57f350', '#5f3a6e']
   }]
 },
 {
-  name: 'second project',
+  name: 'project 2',
   palettes: [{
-    name: 'second A palette',
+    name: 'palette 2-A',
     swatches: ['#98f30b', '#e3501c', '#4538bb', '#3cce59', '#fbdd13']
   }]
 },
 {
-  name: 'third project',
+  name: 'project 3',
   palettes: [{
-    name: 'third A palette',
+    name: 'palette 3-A',
     swatches: ['#a941ec', '#de6213', '#47dc8a', '#4b8de9', '#4ad232']
+  },
+  {
+  name: 'palette 3-B',
+  swatches: ['#5ddee3', '#c2ebe3', '#6a4de9', '#57f350', '#5f3a6e']
+  },
+  {
+    name: 'palette 3-C',
+    swatches: ['#fbdd13', '#98f30b', '#6a4de9', '#6a4de9', '#5f3a6e']
+  }]
+},
+{
+  name: 'project 4',
+  palettes: []
+},
+{
+  name: 'project 5',
+  palettes: [{
+    name: 'palette 5-A',
+    swatches: ['#98f30b', '#e3501c', '#4538bb', '#3cce59', '#fbdd13']
   }]
 }];
 
