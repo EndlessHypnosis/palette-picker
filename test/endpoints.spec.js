@@ -39,6 +39,13 @@ describe('Client Routes', () => {
 // Endpoint tests
 describe('API Routes', () => {
 
+  before(done => {
+    database.migrate.latest()
+      .then(() => {
+        done();
+      })
+  })
+
   // Re-seed data between tests
   beforeEach(done => {
     database.seed.run()
