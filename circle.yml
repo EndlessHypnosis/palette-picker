@@ -9,4 +9,4 @@ deployment:
   production:
     branch: master
     heroku:
-      appname: palette-picker
+      appname: ns-palette-picker
