@@ -4,7 +4,7 @@
   "description": "> By Nick Svetnicka",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Tests all Passing\"",
+    "test": "NODE_ENV=test PORT=3001 mocha --exit",
     "start": "node server.js"
   },
   "repository": {
