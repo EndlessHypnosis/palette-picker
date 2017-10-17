@@ -1,0 +1,30 @@
+{
+  "name": "Palette Picker",
+  "short_name": "Palette Picker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2196F3",
+  "description": "A palette generating app",
+  "icons": [
+    {
+      "src": "https://placebear.com/128/128",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "https://placebear.com/152/152",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "https://placebear.com/144/144",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "https://placebear.com/192/192",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}

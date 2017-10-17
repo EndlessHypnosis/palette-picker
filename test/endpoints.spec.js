@@ -10,12 +10,17 @@ const environment = 'test';
 const configuration = require('../knexfile')[environment];
 const database = require('knex')(configuration);
 
+// after(require('why-is-node-running'));
+
+// var log = require('why-is-node-running');
+
+
 // Before we test our endpoints, lets just make sure the page rendered correctly
 describe('Client Routes', () => {
   // happy path test
   it('should return the homepage with the correct header', done => {
     chai.request(server)
-      .get('/')
+    .get('/')
       .end((error, response) => {
         response.should.have.status(200);
         response.should.be.html;
