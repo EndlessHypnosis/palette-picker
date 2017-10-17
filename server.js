@@ -14,14 +14,23 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 
-app.use(function (req, res, next) {
-  var schema = (req.headers['X-Forwarded-Proto'] || '').toLowerCase();
-  if (schema === 'https') {
-    next();
-  } else {
-    res.redirect('https://' + req.headers.host + req.url);
+// app.use(function (req, res, next) {
+//   var schema = (req.headers['x-Forwarded-proto'] || '').toLowerCase();
+//   if (schema === 'https') {
+//     next();
+//   } else {
+//     res.redirect('https://' + req.headers.host + req.url);
+//   }
+// });
+
+
+const requireHTTPS = (req, res, next) => {
+  if (req.headers['x-forwarded-proto'] != 'https') {
+    return res.redirect('https://' + req.get('host') + req.url);
   }
-});
+  next();
+};
+app.use(requireHTTPS);
 
 
 // app.configure(function () {
