@@ -23,14 +23,22 @@ const database = require('knex')(configuration);
 //   }
 // });
 
-
-const requireHTTPS = (req, res, next) => {
-  if (req.headers['x-forwarded-proto'] != 'https') {
-    return res.redirect('https://' + req.get('host') + req.url);
+app.use(function (req, resp, next) {
+  if (req.headers['x-forwarded-proto'] == 'http') {
+    return resp.redirect(301, 'https://' + req.headers.host + '/');
+  } else {
+    return next();
   }
-  next();
-};
-app.use(requireHTTPS);
+});
+
+
+// const requireHTTPS = (req, res, next) => {
+//   if (req.headers['x-forwarded-proto'] != 'https') {
+//     return res.redirect('https://' + req.get('host') + req.url);
+//   }
+//   next();
+// };
+// app.use(requireHTTPS);
 
 
 // app.configure(function () {
