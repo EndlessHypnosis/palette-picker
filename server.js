@@ -13,6 +13,33 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
+
+app.use(function (req, res, next) {
+  var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
+  if (schema === 'https') {
+    next();
+  } else {
+    res.redirect('https://' + req.headers.host + req.url);
+  }
+});
+
+
+// app.configure(function () {
+//   app.set('views', __dirname + '/views');
+//   app.set('view engine', 'ejs');
+//   app.use(express.bodyParser());
+//   app.use(express.methodOverride());
+//   app.use(express.cookieParser());
+//   app.configure('production', function () {
+    
+//   });
+//   app.use(app.router);
+//   app.use(express.static(__dirname + '/public'));
+//   app.use(express.favicon(__dirname + '/public/favicon.ico'));
+// });
+
+
+
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select()
   .then(projects => {
