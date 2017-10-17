@@ -16,6 +16,7 @@ const database = require('knex')(configuration);
 
 app.use(function (req, res, next) {
   var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
+  console.log('SCHEMA:', schema)
   if (schema === 'https') {
     next();
   } else {
